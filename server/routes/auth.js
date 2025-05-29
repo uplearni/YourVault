@@ -1,17 +1,11 @@
 const express = require('express');
+const authController=require("../controllers/auth");
+const signupValidator =require("../middleware/validators");
 
 const router = express.Router();
 
-router.post("/signup",(req,res)=>{
-    res.status(200).json({
-        mssg:"sign up succesfull"
-    })
-});
+router.post("/signup",signupValidator,authController.signup);
 
-router.post("/login",(req,res)=>{
-    res.status(300).json({
-        mssg:"log in succesfull"
-    })
-})
+router.post("/login",authController.login);
 
 module.exports = router;
