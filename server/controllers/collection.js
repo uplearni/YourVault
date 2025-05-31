@@ -6,7 +6,7 @@ const {throwError}= require("../utils/helper");
 exports.getCollections=async (req,res,next)=>{
    const userId=req.userId;
    try{
-    const collection=await Collection.find({userId:userId});
+    const collection=await Collection.find({createdBy:userId});
     res.status(200).json({
         message:"success",
         collection,
@@ -30,7 +30,7 @@ exports.createCollection=async (req,res,next)=>{
             message:"Collection created Successfully",
             data:{
                 id:result._id.toString(),
-                collection:result.cname
+                collection:result.cname,
             }
         });
     }catch(err){
@@ -64,6 +64,8 @@ exports.getCollectionById=async (req,res,next)=>{
       },
     ]);
 
+      if (!data || data.length === 0) throwError("Collection not found", 404);
+      
     res.status(200).json({
       message: "Collection fetched successfully",
       data: data[0], 
@@ -81,7 +83,7 @@ exports.updateCollection=async (req,res,next)=>{
 
     try{
         const result=await Collection.findOneAndUpdate(
-            {_id:collectionId,userId:userId},
+            {_id:collectionId,createdBy:userId},
             {cname,description},
             {new:true},
         )
@@ -103,7 +105,7 @@ exports.deleteCollection=async (req,res)=>{
 
     try{
         const result=await Collection.deleteOne({_id:collectionId,createdBy:userId});
-        if(!result) throwError("no collection found",422);
+        if(result.deletedCount===0) throwError("no collection found",422);
         
         res.status(200).json({
             message:"Collection delete successfully",
