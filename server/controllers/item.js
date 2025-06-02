@@ -1,13 +1,53 @@
 const {Item}=require("../models/item");
 const {throwError}=require("../utils/helper");
-const mongoose=require("mongoose");
+// const mongoose=require("mongoose");
 
-exports.createItem=async(req,res,next)=>{
-    const {title,description,url,collectionId,file} =req.body;
+exports.createItem=async (req,res,next)=>{
+    const {title,description,type,url,collectionId} =req.body;
+    const file=req.file;
+
+    try{
+        if(!type || !["url","file"].includes(type)){
+            throwError("Invalid type",422);
+        }
+
+        if(!collectionId) throwError("Collection Id is required",422);
+
+        let itemData={
+            title,
+            description,
+            type,
+            collectionId,
+        };
+
+        if(type==="url"){
+            if(!url) throwError("you need to enter a url",422);
+        }else if(type==="file"){
+            if(!file) throwError("a file is required to attach" , 422);
+            
+            itemData.file={
+            name:file.name,
+            path:file.path,
+            mimetype:file.mimetype,
+           };
+        }
+        
+        const newItem=new Item(itemData);
+        const savedItem=await newItem.save();
+
+        res.status(200).json({
+            message:"Item saved successfully",
+            data:savedItem,
+        });
+    }catch(err){
+        next(err);
+    }
 }
 
-exports.updateItem=async(req,res,next)=>{
-    
+exports.updateItem=async (req,res,next)=>{
+    const itemId=req.params.itemId;
+    const {title,description,type,url}=req.body;
+
 }
 
 exports.deleteItem=async(req,res,next)=>{
