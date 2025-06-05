@@ -4,10 +4,11 @@ const {throwError}= require("../utils/helper");
 
 
 exports.getCollections=async (req,res,next)=>{
-   const userId=req.userId;
+   const userId=req.userId;//get user id 
    try{
+    //search it in collection through created by
     const collection=await Collection.find({createdBy:userId});
-    res.status(200).json({
+    res.status(200).json({//send back collection
         message:"success",
         collection,
     })
@@ -17,6 +18,7 @@ exports.getCollections=async (req,res,next)=>{
 }
 
 exports.createCollection=async (req,res,next)=>{
+  //getting data to create
     const cname=req.body.cname;
     const description=req.body.description;
     
@@ -24,8 +26,9 @@ exports.createCollection=async (req,res,next)=>{
         if(!cname){
             throwError("Please enter a collection name",422);
         }
+        //create collection
         const collection=new Collection({cname,description,createdBy:req.userId});
-        const result= await collection.save();
+        const result= await collection.save();//save them
         res.status(200).json({
             message:"Collection created Successfully",
             data:{
@@ -38,20 +41,30 @@ exports.createCollection=async (req,res,next)=>{
     }
 }
 
+//get one collection by its id 
+//get all items in that collection
+//in sql: 
+/*S
+SELECT * FROM collections
+JOIN items ON items.collectionId = collections._id
+WHERE collections._id = :collectionId
+*/
+//but in mongodb we dont get joins so we use aggregation pipeline
 exports.getCollectionById=async (req,res,next)=>{
-    const collectionId = req.params.collectionId; // or rename this to collectionId for clarity
+    const collectionId = req.params.collectionId; 
 
   try {
     if (!collectionId) throwError("Invalid collection ID provided.", 422);
 
     const data = await Collection.aggregate([
       {
-        $match: { _id: mongoose.Types.ObjectId(collectionId) },
+        $match: { _id: mongoose.Types.ObjectId(collectionId) },//same as _id:collectionId but mongodb doesnt use _id as String 
       },
       {
-        $lookup: {
+        //join the collection with its respective items
+        $lookup: {//used as JOIN , tells mongodb to look in Item Collections
           from: "items", // Collection name for Item model (Mongo auto-pluralizes it)
-          let: { collectionId: "$_id" },
+          let: { collectionId: "$_id" }, //store current collection id in $_id
           pipeline: [
             {
               $match: {
@@ -75,6 +88,8 @@ exports.getCollectionById=async (req,res,next)=>{
   }
 };
 
+//another way would be find collection Id and then find items with that collectionId but that would take two rounds
+
 exports.updateCollection=async (req,res,next)=>{
     const cname=req.body.cname;
     const description=req.body.description;
@@ -83,7 +98,7 @@ exports.updateCollection=async (req,res,next)=>{
 
     try{
         const result=await Collection.findOneAndUpdate(
-            {_id:collectionId,createdBy:userId},
+            {_id:collectionId,createdBy:userId},//find and user can update their own collection
             {cname,description},
             {new:true},
         )

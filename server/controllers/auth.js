@@ -33,7 +33,7 @@ exports.login=async(req,res,next)=>{
        const loadedUser=await User.findOne({email}); //finding the user
 
        if(!loadedUser) throwError("User not found",401);//if not found then send back error
-       const isEqual=await bcrypt.compare(password,user.password); // checking if the password is correct
+       const isEqual=await bcrypt.compare(password,loadedUser.password); // checking if the password is correct
 
        if(!isEqual) throwError("wrong password",401); //check if wrong or not 
 

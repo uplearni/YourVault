@@ -2,7 +2,7 @@ const mongoose=require("mongoose");
 
 const itemSchema=new mongoose.Schema({
     type:{
-        type:String,
+        type:String,//what kind of item is this 
         enum:["url","file"],//this can be file or a url 
         required:true,
     },
@@ -16,11 +16,26 @@ const itemSchema=new mongoose.Schema({
         },
     },
 
-    file:{
-        name:String,
-        path:String,
-        mimetype:String,//fileType
+    file: {
+        name: {
+        type: String,
+        required: function () {
+           return this.type === "file";
+        }
     },
+      path: {
+        type: String,
+        required: function () {
+        return this.type === "file";
+      }
+    },
+       mimetype: {
+       type: String,
+       required: function () {
+        return this.type === "file";
+     }
+    }
+   },
 
     collectionId:{
         type:mongoose.SchemaTypes.ObjectId,

@@ -2,6 +2,7 @@ const jwt=require("jsonwebtoken");
 const {throwError} =require("../utils/helper");
 const { JWT_SECRET } = require("../config");
 
+//verifying the user before letting them access other things
 module.exports=(req,res,next)=>{
     const authHeader=req.get("Authorization");
     if(!authHeader) throwError("Not authenticated",401);
@@ -15,5 +16,7 @@ module.exports=(req,res,next)=>{
     }
 
     if(!decodedToken) throwError("Not authenticated",401);
+    req.userId = decodedToken.userId;
+    req.email=decodedToken.email;
     next();
 }

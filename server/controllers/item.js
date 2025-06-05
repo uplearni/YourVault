@@ -50,6 +50,24 @@ exports.updateItem=async (req,res,next)=>{
 
 }
 
+exports.getItemById = async (req, res, next) => {
+  const itemId = req.params.itemId;
+  try {
+    if (!itemId) throwError("Item ID is required", 422);
+
+    const item = await Item.findById(itemId);
+    if (!item) throwError("Item not found", 404);
+
+    res.status(200).json({
+      message: "Item fetched successfully",
+      data: item,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 exports.deleteItem=async(req,res,next)=>{
     const itemId=req.params.itemId;
     try{
