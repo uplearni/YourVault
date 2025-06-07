@@ -1,7 +1,7 @@
 //imports
 const express=require("express");//for routing
 const mongoose=require("mongoose");//for database
-const sendErrorResponse=require("./controllers/error");
+const sendErrorResponse=require("./controllers/sendErrorResponse");
 const rootRouter= require("./routes/server"); //routes
 const cors=require("cors")
 const setHeaders=require("./middleware/headers")
@@ -27,10 +27,11 @@ app.use(setHeaders);
 //this reads the body of the request and make it available to be accessible through req.body
 app.use(express.json());
 app.use("/",rootRouter);
+app.use("/uploads", express.static("uploads"));
 
 //handle error
 app.use(sendErrorResponse);
 
 mongoose.connect(process.env.MONGO_URL).then(
     ()=>app.listen(process.env.PORT || 8080)
-    ).catch((err)=>console.log(err));
+).catch((err)=>console.log(err));

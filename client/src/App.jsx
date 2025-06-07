@@ -1,7 +1,7 @@
 
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme/theme';
-import { Room } from "./pages/Room"
+import { Dashboard} from "./pages/Dashboard"
 
 function App() {
  
@@ -10,7 +10,7 @@ function App() {
     <>
     
      <ThemeProvider theme={theme}>
-     <Room></Room>
+     <Dashboard></Dashboard>
      </ThemeProvider>
     </>
   )

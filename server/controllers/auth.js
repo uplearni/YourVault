@@ -48,3 +48,20 @@ exports.login=async(req,res,next)=>{
         next(err);
     }
 }
+
+exports.showInfo=async(req,res,next)=>{
+    const userId=req.userId;
+
+    try{
+        const user=await User.findOne({_id:userId});
+        if(!user) throwError("no Info Found",401);
+       const {password , ...userData}=user.toObject();//convert user to plain javascript object
+       res.status(200).json({
+           message:"found user info",
+           data :userData
+       })
+
+    }catch(err){
+        next(err);
+    }
+}

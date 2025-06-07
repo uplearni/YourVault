@@ -3,68 +3,60 @@ const {throwError}=require("../utils/helper");
 // const mongoose=require("mongoose");
 
 exports.createItem=async (req,res,next)=>{
-    const {title,description,type,url,collectionId} =req.body;
-    const file=req.file;
-
+    const {title,description,type,url,collectionId}=req.body;
     try{
-        if(!type || !["url","file"].includes(type)){
-            throwError("Invalid type",422);
-        }
-
-        if(!collectionId) throwError("Collection Id is required",422);
-
+        if(!type || !collectionId) throwError("type and collection id are needed",422);
         let itemData={
-            title,
-            description,
-            type,
-            collectionId,
-        };
+        type,title,description,collectionId,
+       };
 
-        if(type==="url"){
-            if(!url) throwError("you need to enter a url",422);
-        }else if(type==="file"){
-            if(!file) throwError("a file is required to attach" , 422);
-            
-            itemData.file={
-            name:file.name,
-            path:file.path,
-            mimetype:file.mimetype,
-           };
-        }
-        
-        const newItem=new Item(itemData);
-        const savedItem=await newItem.save();
+       if(type==='url'){//if type is url check if it is given
+         if(!url) throwError("you need to provide a url",422);
+         itemData.url=url;
+       }
 
-        res.status(200).json({
-            message:"Item saved successfully",
-            data:savedItem,
-        });
+       if(type==='file'){
+          if(!req.file) throwError("File is required",422);
+          itemData.file = {
+          name: req.file.originalname,
+          path: req.file.path,
+          mimetype: req.file.mimetype,
+         };
+       }
+
+       const item=new Item(itemData);
+       const result=await Item.save();
+
+       res.status(200).json({
+        message: "new item added",
+        data:item
+       })
+       
     }catch(err){
         next(err);
     }
 }
 
 exports.updateItem=async (req,res,next)=>{
-    const itemId=req.params.itemId;
-    const {title,description,type,url}=req.body;
+   
 
 }
 
 exports.getItemById = async (req, res, next) => {
   const itemId = req.params.itemId;
   try {
-    if (!itemId) throwError("Item ID is required", 422);
+     if (!itemId) throwError("Item ID is required", 422);
 
-    const item = await Item.findById(itemId);
-    if (!item) throwError("Item not found", 404);
+     const item = await Item.findById(itemId);
+     if (!item) throwError("Item not found", 404);
 
-    res.status(200).json({
+     res.status(200).json({
       message: "Item fetched successfully",
       data: item,
-    });
-  } catch (err) {
+     });
+   } catch (err) {
     next(err);
-  }
+   }
 };
 
 
