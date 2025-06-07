@@ -37,10 +37,23 @@ exports.createItem=async (req,res,next)=>{
     }
 }
 
+//type cant be changes
 exports.updateItem=async (req,res,next)=>{
-   
+   const { title, description } = req.body;
+  const itemId = req.params.itemId;
 
-}
+  try {
+    const item = await Item.findById(itemId);
+    if (item.type === "url" && url) item.url = url;
+    item.title = title || item.title;
+    item.description = description || item.description;
+
+    const updatedItem = await item.save();
+    res.status(200).json({ message: "Item updated", item: updatedItem });
+  } catch (err) {
+    next(err);
+  }
+};   
 
 exports.getItemById = async (req, res, next) => {
   const itemId = req.params.itemId;
