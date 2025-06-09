@@ -1,22 +1,24 @@
-import {lazy , Suspense} from 'react'//to import only whats needed 
+import {lazy , Suspense, useState} from 'react'//to import only whats needed 
 import {BrowserRouter , Routes, Route} from 'react-router-dom';
 import ProtectRoute from './components/ProtectRoute';
+import AppLayout from './components/layout/AppLayout';
 import LayoutLoader from "./components/LayoutLoader";
 import {Auth} from "./pages/Auth";
 import {Dashboard} from "./pages/Dashboard";
 import {Collection} from "./pages/Collection";
 import {NotFound} from "./pages/NotFound";
-import AppLayout from './components/layout/AppLayout';
+
 
 //const LayoutLoader=lazy(()=>import("./components/LayoutLoader"));
-// const Auth=lazy(()=>import("./pages/Auth"));
-// const Dashboard=lazy(()=>import("./pages/Dashboard"));
+//const Auth=lazy(()=>import("./pages/Auth"));
+//const Dashboard=lazy(()=>import("./pages/Dashboard"));
 //const Collection=lazy(()=>import("./pages/Collection"));
-// const NotFound=lazy(()=>import("./pages/NotFound"));
+//const NotFound=lazy(()=>import("./pages/NotFound"));
 
 
 function App() {
-  let user=true;
+let user=true;
+
 
   return (
      <>
