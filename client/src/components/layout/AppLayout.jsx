@@ -7,10 +7,10 @@ export default function AppLayout({ children }) {
     <div className="min-h-screen flex flex-col">
       <Navbar/>
 
-      <div className="flex flex-1 pt-16">
+      <div className="flex  pt-16">
         <div className="w-1/5" />
       <Side/>
-        <main className="flex-1 p-6 bg-gray-50 dark:bg-gray-800 min-h-[calc(100vh-64px)]">
+        <main className="pt-16 ml-[20%] p-6">
           {children}
         </main>
       </div>
