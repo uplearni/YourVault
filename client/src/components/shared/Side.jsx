@@ -1,6 +1,8 @@
 import React, { useState , useEffect } from 'react'
+import { NavLink } from "react-router-dom";
 
 export const Side = () => {
+  const [sidebarOpen,setIsSidebarOpen]=useState(false);
   const [darkMode,setDarkMode]=useState(()=>{ //take the theme user has set in their browser by default
     return localStorage.getItem('theme')==='dark';
   });
@@ -15,20 +17,63 @@ export const Side = () => {
     }
   },[darkMode])
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!sidebarOpen);
+  };
+  
   return (
-    <div className='fixed top-16 left-0 p-6  h-[calc(100vh-64px)] w-1/5 border-r border-gray-200 dark:border-gray-700 bg-white overflow-y-auto'>
-    <div className="  flex flex-col justify-between h-full">
-    <div className="space-y-4">
-      <div>Collection</div>
-      <div >Create Collection</div>
-    </div>
-    <div className='pt-6'><button
-            onClick={() => setDarkMode(!darkMode)}
-            className="text-sm text-gray-600 dark:text-gray-300 hover:underline"
-          >
-            Toggle {darkMode ? 'Light' : 'Dark'} Mode
-          </button></div>
-    </div>
-    </div>
+    <>
+     <button 
+      className='fixed top-20 left-4 z-50 md:hidden text-gray-600 dark:text-gray-300'
+      onClick={toggleSidebar}
+      aria-label={sidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+      aria-expanded={sidebarOpen}
+      >
+        {sidebarOpen ? "X" : "☰"}
+      </button>
+
+      <aside 
+      className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-[20%] mt-6 p-5 bg-white border-r border-gray-200 overflow-y-auto transform transition-transform duration-300 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 md:block`}
+        role='Complementary'
+        aria-label='Sidebar navigation'>
+        <div className='flex flex-col h-full justify-between'>
+        <nav className='space-y-3'>
+         <NavLink to="/"
+          className={({isActive})=>`block py-2 px-4 text-sm rounded ${
+                  isActive
+                    ? "bg-blue-100 dark:bg-blue-700 text-blue-700 dark:text-white"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`
+              }
+              aria-current={({ isActive }) => (isActive ? "page" : undefined)}
+            >
+              Collections
+          </NavLink>
+         <NavLink to="/fgvsr"
+              className={({ isActive }) =>
+                `block py-2 px-4 text-sm rounded ${
+                  isActive
+                    ? "bg-blue-100 dark:bg-blue-700 text-blue-700 dark:text-white"
+                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                }`
+              }
+              aria-current={({ isActive }) => (isActive ? "page" : undefined)}
+            >
+              Create Collection
+            </NavLink>
+               </nav>
+        <div className="pt-4">
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="w-full py-2 text-left px-4 mb-6 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+              aria-pressed={darkMode}
+            >
+              Toggle {darkMode ? "Light" : "Dark"} Mode
+            </button>
+          </div>
+       </div>
+      </aside>
+    </> 
   )
 }
