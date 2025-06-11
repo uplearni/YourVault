@@ -1,11 +1,14 @@
 import React, { useState , useEffect } from 'react'
-import { NavLink } from "react-router-dom";
+import { NavLink , useLocation } from "react-router-dom";
 
 export const Side = () => {
   const [sidebarOpen,setIsSidebarOpen]=useState(false);
   const [darkMode,setDarkMode]=useState(()=>{ //take the theme user has set in their browser by default
     return localStorage.getItem('theme')==='dark';
   });
+
+  const location=useLocation();//to know which page we are on
+  const isCollectionPage=location.pathname.startsWith("/collection");
 
   useEffect(()=>{
     if(darkMode){//if dark mode then add dark class in every document
@@ -39,7 +42,7 @@ export const Side = () => {
         aria-label='Sidebar navigation'>
         <div className='flex flex-col h-full justify-between'>
         <nav className='space-y-3'>
-         <NavLink to="/"
+         <NavLink to={isCollectionPage ? `/collection/${location.pathname.split("/")[2]}` : "/"}
           className={({isActive})=>`block py-2 px-4 text-sm rounded ${
                   isActive
                     ? "bg-blue-100 dark:bg-blue-700 text-blue-700 dark:text-white"
@@ -48,9 +51,9 @@ export const Side = () => {
               }
               aria-current={({ isActive }) => (isActive ? "page" : undefined)}
             >
-              Collections
+            {isCollectionPage ? "Items" : "Collection"}
           </NavLink>
-         <NavLink to="/fgvsr"
+         <NavLink to={isCollectionPage ? "" : ""}
               className={({ isActive }) =>
                 `block py-2 px-4 text-sm rounded ${
                   isActive
@@ -60,7 +63,7 @@ export const Side = () => {
               }
               aria-current={({ isActive }) => (isActive ? "page" : undefined)}
             >
-              Create Collection
+             {isCollectionPage ? "Create Item" : "Create Collection"}
             </NavLink>
                </nav>
         <div className="pt-4">
