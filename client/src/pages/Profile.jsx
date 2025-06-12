@@ -3,7 +3,7 @@ import React from 'react'
 export const Profile = ({isOpen,onClose}) => {
   if (!isOpen) return null;
   return (
-     <div className='absolute inset-0 z-40 flex'>
+     <div className='absolute inset-0 z-60 flex'>
           {/*Opaque Background*/}
            <div 
            className='absolute inset-0  bg-opacity-100'

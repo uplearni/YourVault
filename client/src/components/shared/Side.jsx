@@ -1,24 +1,30 @@
 import React, { useState , useEffect } from 'react'
 import { NavLink , useLocation } from "react-router-dom";
+import { CreateCard } from '../forms/CreateCard';
+import { CreateItem } from '../forms/Createitem';
+
 
 export const Side = () => {
   const [sidebarOpen,setIsSidebarOpen]=useState(false);
   const [darkMode,setDarkMode]=useState(()=>{ //take the theme user has set in their browser by default
     return localStorage.getItem('theme')==='dark';
   });
+  const [isCreateCardOpen, setIsCreateCardOpen] = useState(true);
+  const [isCreateItemOpen, setIsCreateItemOpen] = useState(false);
 
   const location=useLocation();//to know which page we are on
   const isCollectionPage=location.pathname.startsWith("/collection");
 
-  useEffect(()=>{
-    if(darkMode){//if dark mode then add dark class in every document
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme','dark');
-    }else{
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme','light');
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem("theme", newMode ? "dark" : "light");
+    if (newMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-  },[darkMode])
+  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!sidebarOpen);
@@ -51,24 +57,18 @@ export const Side = () => {
               }
               aria-current={({ isActive }) => (isActive ? "page" : undefined)}
             >
-            {isCollectionPage ? "Items" : "Collection"}
+              {isCollectionPage ? "Items" : "My Collections"}
           </NavLink>
-         <NavLink to={isCollectionPage ? "" : ""}
-              className={({ isActive }) =>
-                `block py-2 px-4 text-sm rounded ${
-                  isActive
-                    ? "bg-blue-100 dark:bg-blue-700 text-blue-700 dark:text-white"
-                    : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                }`
-              }
-              aria-current={({ isActive }) => (isActive ? "page" : undefined)}
+         <button 
+              onClick={() => (isCollectionPage ? setIsCreateItemOpen(true) : setIsCreateCardOpen(true))}
+              className="block w-full text-left py-2 px-4 text-sm rounded text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-             {isCollectionPage ? "Create Item" : "Create Collection"}
-            </NavLink>
+              {isCollectionPage ? "Create Item" : "Create Collection"}
+            </button>
                </nav>
         <div className="pt-4">
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleDarkMode}
               className="w-full py-2 text-left px-4 mb-6 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
               aria-pressed={darkMode}
             >
@@ -77,6 +77,11 @@ export const Side = () => {
           </div>
        </div>
       </aside>
+
+      <CreateCard isOpen={isCreateCardOpen} onClose={() => setIsCreateCardOpen(false)} />
+      {isCollectionPage && (
+        <CreateItem isOpen={isCreateItemOpen} onClose={() => setIsCreateItemOpen(false)} />
+      )}
     </> 
   )
 }
