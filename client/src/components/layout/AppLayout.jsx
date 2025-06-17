@@ -4,7 +4,7 @@ import {Side} from "../shared/Side"
 export default function AppLayout({ children }) {
    // console.log("AppLayout rendered");
   return (
-        <div className="min-h-screen flex flex-col bg-white dark:bg-darkgray">
+        <div className="min-h-screen flex flex-col bg-light-background dark:bg-dark-background overflow-x-hidden">
     <Navbar/>
 
     <div className="flex  flex-1">

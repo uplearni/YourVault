@@ -32,7 +32,7 @@ export const Side = () => {
     <>
       {/* Mobile Toggle Button */}
       <button
-        className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-light-primary text-dark-text dark:bg-dark-primary dark:text-dark-text hover:bg-opacity-90 dark:hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-background dark:focus:ring-offset-dark-background"
+        className="fixed top-17 left-4 z-50 md:hidden p-2 rounded-lg border-1 bg-light-primary text-white dark:bg-dark-primary dark:text-white hover:bg-opacity-90 dark:hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-background dark:focus:ring-offset-dark-background"
         onClick={toggleSidebar}
         aria-label={sidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
         aria-expanded={sidebarOpen}
@@ -57,17 +57,9 @@ export const Side = () => {
         <div className="flex flex-col h-full justify-between">
           <nav className="space-y-2">
             <NavLink
-              to={isCollectionPage ? `/collection/${location.pathname.split('/')[2]}` : '/'}
-              className={({ isActive }) =>
-                `w-full rounded transition-colors duration-200 ${
-                  isActive
-                    ? 'bg-light-secondary dark:bg-dark-secondary'
-                    : 'hover:bg-light-secondary dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary'
-                }`
-              }
               aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
             >
-              <div className="flex items-center space-x-2 py-2 px-4 text-sm font-medium text-white data-[active=true]:text-white data-[active=true]:text-white">
+              <div className="flex items-center space-x-2 py-2 px-4 mt-6 text-sm font-medium text-white data-[active=true]:text-white data-[active=true]:text-white">
                 <div className="flex justify-between w-full">
                   {isCollectionPage ? 'Items' : 'My Collections'}
                   <svg
@@ -88,7 +80,7 @@ export const Side = () => {
               </div>
             </NavLink>
             <button
-              className="w-full rounded text-sm font-medium text-dark-text dark:text-dark-text hover:bg-light-secondary dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary transition-colors duration-200"
+              className="w-full rounded text-sm font-medium text-white  hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-background dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary transition-colors duration-200"
               onClick={() => (isCollectionPage ? setIsCreateItemOpen(true) : setIsCreateCardOpen(true))}
             >
               <div className="flex items-center justify-between py-2 px-4">
@@ -109,7 +101,7 @@ export const Side = () => {
             </button>
           </nav>
           <div className="pt-6">
-            <div className="w-full flex items-center justify-center py-2 px-4 rounded text-sm font-medium text-dark-text dark:text-dark-text transition-colors duration-200">
+            <div className="w-full flex items-center justify-center py-2 px-4 rounded text-sm font-medium text-white transition-colors duration-200">
               <div className="flex items-center space-x-2">
                 <FaMoon className="w-4 h-4" />
                 <label className="relative inline-flex items-center cursor-pointer">
