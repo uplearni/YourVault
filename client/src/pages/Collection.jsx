@@ -47,7 +47,7 @@ export const Collection = () => {
       {/* collection description */}
       <div className='mb-6'>
         <h1 id='collection-heading'
-            className='text-2xl font-bold mt-5 mb-6"'>
+            className='text-2xl font-bold mt-5 mb-6 text-light-text'>
             {mockCollection.name}
         </h1>
         <p className='mt-2'>{mockCollection.description}</p>

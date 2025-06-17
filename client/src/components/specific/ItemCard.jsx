@@ -3,7 +3,7 @@ import React from 'react'
 export const ItemCard = ({ name, description, link, file }) => {
   return (
     <div
-      className="w-full max-w-xs  bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 flex flex-col "
+      className="w-full max-w-xs  bg-light-secondary rounded-lg shadow-md p-4 flex flex-col "
       role="listitem"
       aria-label={`Item: ${name}`}
     >

@@ -19,7 +19,7 @@ const collections = [
   <section className="p-5" aria-labelledby="collections-heading">
       <h1
         id="collections-heading"
-        className="text-2xl font-bold mt-5 mb-6"
+        className="text-2xl font-bold mt-5 mb-6 text-light-text"
       >
         My Collections
       </h1>
