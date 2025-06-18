@@ -11,7 +11,7 @@ export const Card = React.memo(({ id, name, description, onUpdate, onDelete }) =
       aria-label={`Collection: ${name}`}
     >
       <div className="space-y-3">
-        <div className="text-base sm:text-lg font-bold text-light-text dark:text-white">
+        <div className="text-base sm:text-lg font-bold text-light-text dark:text-dark-text">
           {name}
         </div>
         {description && (
