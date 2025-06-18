@@ -32,7 +32,7 @@ export const Side = () => {
     <>
       {/* Mobile Toggle Button */}
       <button
-        className="fixed top-17 left-4 z-50 md:hidden p-2 rounded-lg border-1 bg-light-primary text-white dark:bg-dark-primary dark:text-white hover:bg-opacity-90 dark:hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-background dark:focus:ring-offset-dark-background"
+        className="fixed top-15 left-4 z-50 md:hidden p-2 rounded-lg border-1 bg-light-primary text-white dark:bg-dark-primary dark:text-white hover:bg-opacity-90 dark:hover:bg-opacity-90 transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-background dark:focus:ring-offset-dark-background"
         onClick={toggleSidebar}
         aria-label={sidebarOpen ? 'Close Sidebar' : 'Open Sidebar'}
         aria-expanded={sidebarOpen}
