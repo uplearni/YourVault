@@ -32,7 +32,6 @@ export const Profile = ({ isOpen, onClose }) => {
         </div>
         <div className="mt-8 flex justify-center">
           <button
-            onClick={onClose}
             aria-label="Log out of profile"
             className="px-6 py-2 bg-light-primary dark:bg-dark-primary text-white rounded-md hover:bg-light-secondary dark:hover:bg-dark-secondary hover:border-1 hover:border-light-primary hover:text-light-text dark:hover:text-dark-text focus:ring-offset-2 focus:ring-offset-light-secondary dark:focus:ring-offset-dark-secondary transition-colors duration-200"
           >
