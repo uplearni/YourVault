@@ -48,13 +48,15 @@ export const CreateCard = ({isOpen , onClose}) => {
             </label>
             <input
               id="name"
+              name="name"
               type="text"
+              value={formData.name}
+              onChange={handleChange}
               required
-              className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-colors duration-200"
+              className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
               placeholder="Enter your collection name"
             />
           </div>
-
           <div>
             <label
               htmlFor="description"
@@ -64,7 +66,10 @@ export const CreateCard = ({isOpen , onClose}) => {
             </label>
             <textarea
               id="description"
-              className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-colors duration-200"
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
               placeholder="Enter its description"
               rows="3"
             />
