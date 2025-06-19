@@ -1,16 +1,27 @@
-import React from 'react'
-import TextField from '@mui/material/TextField';
-import { TextareaAutosize } from '@mui/material';
+import React ,{ useState} from 'react'
+import { CrossButton } from '../shared/CrossButton';
+import { CancelButton } from '../shared/CancelButton';
+import { CreateButton } from '../shared/CreateButton';
 
 
 export const CreateItem = ({isOpen , onClose}) => {
   if(!isOpen) return null;
 
-  const handleSubmit=(e)=>{
-      e.preventDefault();
-      console.log("Collection submitted");
-      onClose();
-  }
+  const [formData, setFormData] = useState({ name: '', description: '', link: '', file: null });
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  console.log('Item submitted', formData);
+  onClose();
+};
+
+const handleChange = (e) => {
+  const { name, value, files } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: name === 'file' ? files[0] : value,
+  }));
+};
 
   return (
      <div className='fixed inset-0 z-50 flex items-center justify-center'>
@@ -19,104 +30,83 @@ export const CreateItem = ({isOpen , onClose}) => {
       onClick={onClose}
       aria-hidden="true"/>
 
-      <div className='relative  max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6'
-      role='dialog'
+      <div className="relative w-full max-w-md bg-light-background dark:bg-dark-background rounded-lg shadow-lg p-6"
+      role="dialog"
       aria-label='Create Item Form'>
-        <div className='flex justify-between item-center mb-4'>
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+        <div className='flex justify-between items-center mb-4'>
+          <h2 className="text-xl font-semibold text-light-text dark:text-dark-text">
             Create Item
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-lg"
-            aria-label="Close create collection form"
-          >
-            ×
-          </button> 
+           <CrossButton onClose={onClose}/> 
         </div>
 
-        <form onSubmit={handleSubmit} className='space-y-4'>
-            <div >
-                <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Item Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter item name"
-            />
-            </div>
+<form onSubmit={handleSubmit} className="space-y-4 border-t border-light-accent dark:border-dark-accent p-5">
+  <div>
+    <label htmlFor="name" className="block text-sm font-medium text-light-text dark:text-dark-text">
+      Item Name
+    </label>
+    <input
+      id="name"
+      name="name"
+      type="text"
+      value={formData.name}
+      onChange={handleChange}
+      required
+      className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
+      placeholder="Enter item name"
+    />
+  </div>
 
-            <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter description"
-              rows="3"
-            />
-          </div>
+  <div>
+    <label htmlFor="description" className="block text-sm font-medium text-light-text dark:text-dark-text">
+      Description
+    </label>
+    <textarea
+      id="description"
+      name="description"
+      value={formData.description}
+      onChange={handleChange}
+      className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
+      placeholder="Enter description"
+      rows="3"
+    />
+  </div>
 
-         <div>
-            <label
-              htmlFor="link"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Link (optional)
-            </label>
-            <input
-              id="link"
-              type="url"
-              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="https://example.com"
-            />
-          </div>
+  <div>
+    <label htmlFor="link" className="block text-sm font-medium text-light-text dark:text-dark-text">
+      Link
+    </label>
+    <input
+      id="link"
+      name="link"
+      type="url"
+      value={formData.link}
+      onChange={handleChange}
+      className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
+      placeholder="https://example.com"
+    />
+  </div>
 
-          <div>
-            <label
-              htmlFor="file"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              File (optional)
-            </label>
-            <input
-              id="file"
-              type="file"
-              className="w-full mt-1 text-gray-600 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-700 dark:file:text-gray-300 dark:hover:file:bg-gray-600"
-            />
-          </div>
+  <div>
+    <label htmlFor="file" className="block text-sm font-medium text-light-text dark:text-dark-text">
+      Upload File
+    </label>
+    <input
+      id="file"
+      name="file"
+      type="file"
+      onChange={handleChange}
+      className="w-full mt-1 text-light-text dark:text-dark-text file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-light-primary dark:file:bg-dark-primary file:text-white dark:file:text-white hover:file:text-light-primary hover:file:bg-light-secondary dark:hover:file:bg-dark-secondary dark:hover:file:text-dark-primary"
+    />
+  </div>
 
-          <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              Create
-            </button>
-          </div>
-        </form>
+  <div className="flex justify-end gap-2">
+    <CancelButton onClose={onClose} />
+    <CreateButton onClose={onClose} />
+  </div>
+</form>
       </div>
      </div>
   )
 }
-{/* <form className='flex flex-col justify-evenly gap-y-4 px-4 w-full'>
-          <TextField variant='outlined' label='Enter item Name'></TextField>
-          <TextareaAutosize variant='outlined' label='Enter  Description'></TextareaAutosize>
-          <div><button className="bg-blue-300 rounded-xl p-3 w-full">Create Item</button></div>
-    </form> */}
+

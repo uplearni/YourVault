@@ -1,14 +1,22 @@
-import React from 'react'
-import TextField from '@mui/material/TextField';
-import { TextareaAutosize } from '@mui/material';
+import React ,{ useState} from 'react'
+import { CrossButton } from '../shared/CrossButton';
+import { CancelButton } from '../shared/CancelButton';
+import { CreateButton } from '../shared/CreateButton';
 
 export const CreateCard = ({isOpen , onClose}) => {
   if(!isOpen) return null;
 
+  const [formData,setFormData]=useState({name:' ',
+                                        description:''});
+
   const handleSubmit=(e)=>{
       e.preventDefault();
-      console.log("Collection submitted");
+      console.log("Collection submitted",formData);
       onClose();
+  }
+
+  const handleChange=(e)=>{
+    setFormData({...formData,[e.target.name]:e.target.value});
   }
 
   return (
@@ -19,28 +27,22 @@ export const CreateCard = ({isOpen , onClose}) => {
       aria-hidden="true"/>
 
       <div
-        className="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6"
+        className="relative w-full max-w-md bg-light-background dark:bg-dark-background rounded-lg shadow-lg p-6"
         role="dialog"
         aria-label="Create Collection form"
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+          <h2 className="text-xl font-semibold text-light-text dark:text-dark-text">
             Create Collection
           </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white text-lg"
-            aria-label="Close create collection form"
-          >
-            ×
-          </button>
+          <CrossButton onClose={onClose}/>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 border-t p-5 border-light-accent dark:">
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              className="block text-sm font-medium text-light-text dark:text-dark-text"
             >
               Collection Name
             </label>
@@ -48,40 +50,30 @@ export const CreateCard = ({isOpen , onClose}) => {
               id="name"
               type="text"
               required
-              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter collection name"
+              className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-colors duration-200"
+              placeholder="Enter your collection name"
             />
           </div>
 
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              className="block text-sm font-medium text-light-text dark:text-dark-text"
             >
               Description
             </label>
             <textarea
               id="description"
-              className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter description"
+              className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-colors duration-200"
+              placeholder="Enter its description"
               rows="3"
             />
           </div>
 
           <div className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-              Create
-            </button>
+            <CancelButton onClose={onClose}/>
+            <CreateButton onClose={onClose}/>
+            
           </div>
         </form>
       </div>
