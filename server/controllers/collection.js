@@ -1,4 +1,4 @@
-const { Collection }= require("../models/collection");
+const Collection = require("../models/collection");
 const mongoose= require("mongoose");
 const {throwError}= require("../utils/helper");
 
@@ -58,7 +58,7 @@ exports.getCollectionById=async (req,res,next)=>{
 
     const data = await Collection.aggregate([
       {
-        $match: { _id: mongoose.Types.ObjectId(collectionId) },//same as _id:collectionId but mongodb doesnt use _id as String 
+        $match: { _id: new mongoose.Types.ObjectId(collectionId) },//same as _id:collectionId but mongodb doesnt use _id as String 
       },
       {
         //join the collection with its respective items
@@ -114,7 +114,7 @@ exports.updateCollection=async (req,res,next)=>{
     }
 }
 
-exports.deleteCollection=async (req,res)=>{
+exports.deleteCollection=async (req,res,next)=>{
     const collectionId=req.params.collectionId;
     const userId=req.userId;
 

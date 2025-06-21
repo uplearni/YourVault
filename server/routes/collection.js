@@ -10,3 +10,5 @@ router.put("/:collectionId",isAuth,collectionController.updateCollection);
 router.delete("/:collectionId",isAuth,collectionController.deleteCollection);
 
 module.exports = router;
+
+//"userId": "6855bd1b585e708089020f69"

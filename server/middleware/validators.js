@@ -1,4 +1,5 @@
 const zod=require("zod");
+const User=require("../models/user");
 
 //defining signUp body 
 const signupBody=zod.object({
@@ -13,6 +14,7 @@ exports.signupValidator= async (req,res,next)=>{
   if(!result.success){
      return res.status(411).json({
         message:"Enter valid feilds",
+        issues:result.error.errors
      })
   }   
 

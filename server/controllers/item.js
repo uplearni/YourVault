@@ -1,6 +1,26 @@
-const {Item}=require("../models/item");
+const Item=require("../models/item");
+const Collection=require("../models/collection")
 const {throwError}=require("../utils/helper");
 // const mongoose=require("mongoose");
+
+exports.getItems=async(req,res,next)=>{
+  try {
+    const userId = req.userId;
+
+    const collections = await Collection.find({ createdBy: userId }).select("_id");
+    const collectionIds = collections.map((col) => col._id);
+
+    // Then, find all items that belong to any of those collections
+    const items = await Item.find({ collectionId: { $in: collectionIds } });
+
+    res.status(200).json({
+      message: "Items fetched successfully",
+      data: items,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.createItem=async (req,res,next)=>{
     const {title,description,type,url,collectionId}=req.body;
@@ -25,7 +45,7 @@ exports.createItem=async (req,res,next)=>{
        }
 
        const item=new Item(itemData);
-       const result=await Item.save();
+       const result=await item.save();
 
        res.status(200).json({
         message: "new item added",
@@ -39,7 +59,7 @@ exports.createItem=async (req,res,next)=>{
 
 //type cant be changes
 exports.updateItem=async (req,res,next)=>{
-   const { title, description } = req.body;
+   const { title, description , url } = req.body;
   const itemId = req.params.itemId;
 
   try {
@@ -80,7 +100,7 @@ exports.deleteItem=async(req,res,next)=>{
 
         const result=await Item.deleteOne({_id:itemId});
 
-        if(result.deleteCount===0) throwError("item not found",404);
+        if(result.deletedCount===0) throwError("item not found",404);
         res.status(200).json({
             message:"item deleted"
         })

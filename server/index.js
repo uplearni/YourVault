@@ -1,4 +1,5 @@
 //imports
+require('dotenv').config();
 const express=require("express");//for routing
 const mongoose=require("mongoose");//for database
 const sendErrorResponse=require("./controllers/sendErrorResponse");
@@ -32,6 +33,14 @@ app.use("/uploads", express.static("uploads"));
 //handle error
 app.use(sendErrorResponse);
 
-mongoose.connect(process.env.MONGO_URL).then(
-    ()=>app.listen(process.env.PORT || 8080)
-).catch((err)=>console.log(err));
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log("Connected to MongoDB ");
+    app.listen(process.env.PORT || 8080, () => {
+      console.log(`Server running on port ${process.env.PORT || 8080}`);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
+

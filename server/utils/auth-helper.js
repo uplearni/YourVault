@@ -1,5 +1,5 @@
 const jwt=require("jsonwebtoken");
-const JWT_SECRET =require("../config");
+const {JWT_SECRET} =require("../config");
 
 exports.generatedAuthToken=(user)=>{
      const token=jwt.sign({
@@ -7,7 +7,7 @@ exports.generatedAuthToken=(user)=>{
         userId:user._id
      },
     JWT_SECRET,
-{expiresIn:"1h",});
+{expiresIn:"1h"});
 
 return token;
 }
