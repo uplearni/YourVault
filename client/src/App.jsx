@@ -1,4 +1,4 @@
-import {lazy , Suspense, useState} from 'react'//to import only whats needed 
+import {lazy , Suspense, useState,useEffect} from 'react'//to import only whats needed 
 import {BrowserRouter , Routes, Route} from 'react-router-dom';
 import ProtectRoute from './components/ProtectRoute';
 import AppLayout from './components/layout/AppLayout';
@@ -7,6 +7,7 @@ import {Auth} from "./pages/Auth";
 import {Dashboard} from "./pages/Dashboard";
 import {Collection} from "./pages/Collection";
 import {NotFound} from "./pages/NotFound";
+import authStore from './store/authStore';
 
 
 //const LayoutLoader=lazy(()=>import("./components/LayoutLoader"));
@@ -17,7 +18,8 @@ import {NotFound} from "./pages/NotFound";
 
 
 function App() {
-let user=true;
+ const token = authStore((state) => state.token);
+ const user = !!token;
 
 
   return (
@@ -33,7 +35,6 @@ let user=true;
        </Routes>
        </Suspense>
      </BrowserRouter>
- 
     </>
   )
 }

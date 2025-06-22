@@ -27,7 +27,7 @@ app.use(setHeaders);
 
 //this reads the body of the request and make it available to be accessible through req.body
 app.use(express.json());
-app.use("/",rootRouter);
+app.use("/api",rootRouter);
 app.use("/uploads", express.static("uploads"));
 
 //handle error
