@@ -6,7 +6,7 @@
 
   export const LogIn = () => {
     const { token } = authStore();
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -47,8 +47,8 @@
       try {
       console.log("sending request");
         const response = await api.post('/user/login', formData);
-        const { token, userId, name } = response.data;
-        setAuth(token, userId, name);
+        const { token, userId, name ,email} = response.data;
+        setAuth(token, userId, name,email);
         console.log("got response");
       } catch (err) {
         const errorMessage = err.response?.data?.message || 'Login failed. Please try again.';
@@ -117,7 +117,7 @@
     aria-label="Log in"
     className={`px-6 py-2 rounded-md transition-colors duration-200
       ${(!formData.email || !formData.password || loading)
-        ? 'bg-gray-400 cursor-not-allowed'
+        ? 'bg-light-secondary dark:bg-dark-secondary cursor-not-allowed'
         : 'bg-light-primary dark:bg-dark-primary text-white hover:bg-light-secondary dark:hover:bg-dark-secondary hover:text-light-primary dark:hover:text-dark-primary'}
     `}
   >

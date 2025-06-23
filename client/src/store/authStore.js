@@ -8,13 +8,14 @@
         token:null,//we need token
         userId:null,
         name:null,
+        email:null,
         error:null,
         loading :false,//it means we are still checking user status 
 
         //defineing  what we can do with auth 
-        setAuth:(token,userId,name)=>//once we set the auth with all the required item 
+        setAuth:(token,userId,name,email)=>//once we set the auth with all the required item 
             set(()=>{
-                return { token, userId, name, loading: false ,error:null};//set loading as false 
+                return { token, userId, name,email, loading: false ,error:null};//set loading as false 
         }),
 
         setLoading:(loading)=>set({loading}),
@@ -22,7 +23,7 @@
 
         clearAuth:()=>//when logout clear the local storage 
             set(()=>{
-                return {token:null,userId:null,name:null,loading:false,error:null};
+                return {token:null,userId:null,name:null,email:null,loading:false,error:null};
             }),
     }),
     {
