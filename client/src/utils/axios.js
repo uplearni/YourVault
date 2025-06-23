@@ -1,4 +1,5 @@
     import axios from 'axios';
+    import authStore from "../store/authStore"
 
     //this create a custom instance of axios called api 
     const api=axios.create({
@@ -10,7 +11,7 @@
     //instead of adding it everytime we just add it here 
     api.interceptors.request.use(
         (config) =>{
-        const token=localStorage.getItem('token');//get token from local storage in browser
+        const token = authStore.getState().token;//get token from local storage in browser
 
         if(token && config.url !== '/user/login' && config.url !== '/user/signup'){//if token exist
             config.headers.Authorization=`Bearer ${token}`;//add token to header 

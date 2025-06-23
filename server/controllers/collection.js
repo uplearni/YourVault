@@ -29,11 +29,12 @@ exports.createCollection=async (req,res,next)=>{
         //create collection
         const collection=new Collection({cname,description,createdBy:req.userId});
         const result= await collection.save();//save them
-        res.status(200).json({
+        res.status(201).json({
             message:"Collection created Successfully",
             data:{
                 id:result._id.toString(),
                 collection:result.cname,
+                description:result.description,
             }
         });
     }catch(err){

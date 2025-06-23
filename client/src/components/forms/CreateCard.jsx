@@ -1,23 +1,38 @@
-import React ,{ useState} from 'react'
+import React ,{ useState , useEffect} from 'react'
 import { CrossButton } from '../shared/CrossButton';
 import { CancelButton } from '../shared/CancelButton';
 import { CreateButton } from '../shared/CreateButton';
+import api from '../../utils/axios';
 
 export const CreateCard = ({isOpen , onClose}) => {
-  if(!isOpen) return null;
+  const [error,setError]=useState(null);
+  const [formData,setFormData]=useState({cname:'',description:''});
 
-  const [formData,setFormData]=useState({name:' ',
-                                        description:''});
-
-  const handleSubmit=(e)=>{
-      e.preventDefault();
-      console.log("Collection submitted",formData);
-      onClose();
-  }
+  useEffect(() => {
+    if (!isOpen) {
+      setFormData({ cname: '', description: '' });
+      setError(null);
+    }
+  }, [isOpen]);
 
   const handleChange=(e)=>{
     setFormData({...formData,[e.target.name]:e.target.value});
   }
+
+  const handleSubmit= async (e)=>{
+      e.preventDefault();
+
+      try{
+        const res=await api.post('/collection/',formData);
+        console.log("created collection");
+        onClose();
+      }catch(err){
+        setError(err?.response?.data?.message || 'Something went wrong');
+      }
+      
+  }
+
+ if(!isOpen) return null;
 
   return (
      <div className='fixed inset-0 z-50 flex items-center justify-center'>
@@ -41,16 +56,16 @@ export const CreateCard = ({isOpen , onClose}) => {
         <form onSubmit={handleSubmit} className="space-y-4 border-t p-5 border-light-accent dark:">
           <div>
             <label
-              htmlFor="name"
+              htmlFor="cname"
               className="block text-sm font-medium text-light-text dark:text-dark-text"
             >
               Collection Name
             </label>
             <input
-              id="name"
-              name="name"
+              id="cname"
+              name="cname"
               type="text"
-              value={formData.name}
+              value={formData.cname}
               onChange={handleChange}
               required
               className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
@@ -77,9 +92,9 @@ export const CreateCard = ({isOpen , onClose}) => {
 
           <div className="flex justify-end gap-2">
             <CancelButton onClose={onClose}/>
-            <CreateButton onClose={onClose}/>
-            
+            <CreateButton type='submit' onClose={onClose}/>
           </div>
+          {error && <p className="text-light-text dark:text-white text-sm text-center mt-5">{error}</p>}
         </form>
       </div>
     </div>
