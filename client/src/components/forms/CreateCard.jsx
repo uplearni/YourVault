@@ -2,6 +2,7 @@ import React ,{ useState , useEffect} from 'react'
 import { CrossButton } from '../shared/CrossButton';
 import { CancelButton } from '../shared/CancelButton';
 import { CreateButton } from '../shared/CreateButton';
+import collectionStore from '../../store/collectionStore';
 import api from '../../utils/axios';
 
 export const CreateCard = ({isOpen , onClose}) => {
@@ -23,9 +24,12 @@ export const CreateCard = ({isOpen , onClose}) => {
       e.preventDefault();
 
       try{
-        const res=await api.post('/collection/',formData);
-        console.log("created collection");
-        onClose();
+          collectionStore.getState().createCollection({
+          cname: formData.cname,
+          description: formData.description,
+      });
+
+      onClose();
       }catch(err){
         setError(err?.response?.data?.message || 'Something went wrong');
       }
@@ -53,7 +57,7 @@ export const CreateCard = ({isOpen , onClose}) => {
           <CrossButton onClose={onClose}/>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 border-t p-5 border-light-accent dark:">
+        <form onSubmit={handleSubmit} className="space-y-4 border-t p-5 border-light-accent dark:border-dark-accent">
           <div>
             <label
               htmlFor="cname"
@@ -92,7 +96,7 @@ export const CreateCard = ({isOpen , onClose}) => {
 
           <div className="flex justify-end gap-2">
             <CancelButton onClose={onClose}/>
-            <CreateButton type='submit' onClose={onClose}/>
+            <CreateButton type='submit'/>
           </div>
           {error && <p className="text-light-text dark:text-white text-sm text-center mt-5">{error}</p>}
         </form>

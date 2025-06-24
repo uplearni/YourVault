@@ -2,9 +2,10 @@ import React from 'react';
 import { UpdateButton } from '../shared/UpdateButton';
 import { DeleteButton } from '../shared/DeleteButton';
 
-export const Card = React.memo(({ id, name, description, onUpdate, onDelete }) => {
+export const Card = React.memo(({ id, name, description, onUpdate, onDelete ,onClick}) => {
   return (
     <div
+      onClick={onClick}
       className="w-full max-w-xs aspect-square bg-light-secondary dark:bg-dark-secondary rounded-xl p-4 flex flex-col justify-between shadow-md hover:shadow-lg transition-all duration-300 
       hover:border border-light-primary dark:border-dark-primary hover:bg-light-background/10 dark:hover:bg-dark-background/10"
       role="listitem"
@@ -22,7 +23,8 @@ export const Card = React.memo(({ id, name, description, onUpdate, onDelete }) =
       </div>
       <div>
         <div className="border-t border-light-primary dark:border-dark-primary my-2"></div>
-        <div className="flex flex-row-reverse space-x-3">
+        <div className="flex flex-row-reverse space-x-3"
+        onClick={(e) => e.stopPropagation()}>
           <DeleteButton id={id} onClick={onDelete} />
           <UpdateButton id={id} onClick={onUpdate} />
         </div>

@@ -3,8 +3,8 @@ const collectionController=require("../controllers/collection")
 const isAuth =require("../middleware/is-auth");
 const router = express.Router();
 
-router.get("/",isAuth,collectionController.getCollections);
-router.post("/",isAuth,collectionController.createCollection);
+router.get("/",isAuth,collectionController.getCollections);//done
+router.post("/",isAuth,collectionController.createCollection);//done
 router.get("/:collectionId",isAuth,collectionController.getCollectionById);
 router.put("/:collectionId",isAuth,collectionController.updateCollection);
 router.delete("/:collectionId",isAuth,collectionController.deleteCollection);

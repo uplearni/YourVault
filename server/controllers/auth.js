@@ -5,7 +5,7 @@
 
         exports.signup=async(req,res,next)=>{
             try{
-                const name=req.body.name;
+                const name=req.body.name.toLowerCase().replace(/\b\w/g, s => s.toUpperCase());
                 const email=req.body.email;
                 const password=req.body.password;
                 const hashedpw=await bcrypt.hash(password,12);//hashing password
