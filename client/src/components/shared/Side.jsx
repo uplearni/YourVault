@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation , useMatch} from 'react-router-dom';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { CreateCard } from '../forms/CreateCard';
 import { CreateItem } from '../forms/CreateItem';
 
 export const Side = () => {
   const [sidebarOpen, setIsSidebarOpen] = useState(false);
+const match = useMatch("/collection/:collectionId");
+const collectionId = match?.params?.collectionId;
+
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
   });
@@ -129,7 +132,11 @@ export const Side = () => {
 
       <CreateCard isOpen={isCreateCardOpen} onClose={() => setIsCreateCardOpen(false) } mode="create"  initialData={{ cname: '', description: '', _id: null }}/>
       {isCollectionPage && (
-        <CreateItem isOpen={isCreateItemOpen} onClose={() => setIsCreateItemOpen(false)} />
+        <CreateItem isOpen={isCreateItemOpen} onClose={() => setIsCreateItemOpen(false)} mode='create' collectionId={collectionId} initialData={{ title: '', 
+      description: '', 
+      type:'url',
+      url: '', 
+      file: null,}} />
       )}
     </>
   );

@@ -43,11 +43,10 @@ exports.createItem=async (req,res,next)=>{
           mimetype: req.file.mimetype,
          };
        }
-
        const item=new Item(itemData);
        const result=await item.save();
 
-       res.status(200).json({
+       res.status(201).json({
         message: "new item added",
         data:item
        })

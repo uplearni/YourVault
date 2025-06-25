@@ -2,25 +2,38 @@
   import { CrossButton } from '../shared/CrossButton';
   import { CancelButton } from '../shared/CancelButton';
   import { CreateButton } from '../shared/CreateButton';
-  import api from '../../utils/axios';
+  import itemStore from "../../store/itemStore"
 
 
-  export const CreateItem = ({isOpen , onClose,collectionId}) => {
+  export const CreateItem = ({isOpen , onClose,mode='create' ,collectionId,initialData={}}) => {
     if(!isOpen) return null;
+
     const [error,setError]=useState(null);
     const [formData, setFormData] = useState({ 
-      name: '', 
+      title: '', 
       description: '', 
-      link: '', 
-      file: null 
+      type:'',//set by default
+      url: '', 
+      file: null,
+      collectionId:'',
+      ...initialData,
     });
 
-      useEffect(() => {
-        if (!isOpen) {
-          setFormData({ cname: '', description: '' });
-          setError(null);
-        }
-      }, [isOpen]);
+   useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        title: '',
+        description: '',
+        type: 'url',
+        url: '',
+        file: null,
+        collectionId: collectionId || '',
+        ...initialData,
+      });
+      setError(null);
+    }
+  }, [isOpen, initialData,collectionId]);
+
       
     const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -30,31 +43,20 @@
     }));
   };
 
-  const handleSubmit =async  (e) => {
+  //console.log(formData)
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.link && !formData.file) {
-      setError('Please provide either a link or upload a file.');
-      return;
-    }
-    try{
-      const data=new FormData();
-      data.append('name',formData.name);
-      data.append('description',formData.description);
-      data.append('link',formData.link);
-      data.append('collection',formData.collectionId);
-      if(formData.file){
-        data.append('file',formData.file);
+    try {
+      if (mode === 'create') {
+        await itemStore.getState().createItem(formData);
+      } else {
+        await itemStore.getState().updateItem(formData);
       }
-
-      await api.post('/item/',data);
-      console.log("item created");
       onClose();
-    }catch(err){
-       setError(err?.response?.data?.message || 'Something went wrong');
+    } catch (err) {
+      setError(err.message);
     }
-    
   };
-
 
 
     return (
@@ -66,24 +68,24 @@
 
         <div className="relative w-full max-w-md bg-light-background dark:bg-dark-background rounded-lg shadow-lg p-6"
         role="dialog"
-        aria-label='Create Item Form'>
+        aria-label={`${mode === 'create' ? 'Create' : 'Update'} Item form`}>
           <div className='flex justify-between items-center mb-4'>
             <h2 className="text-xl font-semibold text-light-text dark:text-dark-text">
-              Create Item
+              {mode === 'create' ? 'Create Item' : 'Update Item'}
             </h2>
             <CrossButton onClose={onClose}/> 
           </div>
 
   <form onSubmit={handleSubmit} className="space-y-4 border-t border-light-accent dark:border-dark-accent p-5">
     <div>
-      <label htmlFor="name" className="block text-sm font-medium text-light-text dark:text-dark-text">
+      <label htmlFor="title" className="block text-sm font-medium text-light-text dark:text-dark-text">
         Item Name
       </label>
       <input
-        id="name"
-        name="name"
+        id="title"
+        name="title"
         type="text"
-        value={formData.name}
+        value={formData.title}
         onChange={handleChange}
         className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
         placeholder="Enter item name"
@@ -106,37 +108,58 @@
     </div>
 
     <div>
-      <label htmlFor="link" className="block text-sm font-medium text-light-text dark:text-dark-text">
-        Link
-      </label>
-      <input
-        id="link"
-        name="link"
-        type="url"
-        value={formData.link}
-        onChange={handleChange}
-        className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
-        placeholder="https://example.com"
-      />
-    </div>
+            <label htmlFor="type" className="block text-sm font-medium">
+              Type
+            </label>
+            <select
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              disabled={mode === 'update'} // can't change type on update
+              className="w-full bg-light-secondary dark:bg-dark-secondarytext-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
+            >
+              <option value="url" className='bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white'>URL</option>
+              <option value="file" className='bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white'>File</option>
+            </select>
+          </div>
 
-    <div>
-      <label htmlFor="file" className="block text-sm font-medium text-light-text dark:text-dark-text">
-        Upload File
-      </label>
-      <input
-        id="file"
-        name="file"
-        type="file"
-        onChange={handleChange}
-        className="w-full mt-1 text-light-text dark:text-dark-text file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-light-primary dark:file:bg-dark-primary file:text-white dark:file:text-white hover:file:text-light-primary hover:file:bg-light-secondary dark:hover:file:bg-dark-secondary dark:hover:file:text-dark-primary"
-      />
-    </div>
+          {formData.type === 'url' && (
+            <div>
+              <label htmlFor="url" className="block text-sm font-medium">
+                URL
+              </label>
+              <input
+                id="url"
+                name="url"
+                value={formData.url}
+                onChange={handleChange}
+                className="w-full bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-colors duration-200"
+                placeholder="https://example.com"
+              />
+            </div>
+          )}
 
-    <div className="flex justify-end gap-2">
-      <CancelButton onClose={onClose} />
-      <CreateButton type='submit' onClose={onClose} />
-    </div>
+          {formData.type === 'file' && mode === 'create' && (
+            <div>
+              <label htmlFor="file" className="block text-sm font-medium">
+                Upload File
+              </label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                onChange={handleChange}
+                 className="w-full mt-1 text-light-text dark:text-dark-text  file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-light-primary dark:file:bg-dark-primary file:text-white dark:file:text-white hover:file:text-light-primary hover:file:bg-light-secondary dark:hover:file:bg-dark-secondary dark:hover:file:text-dark-primary"
+      />
+            </div>
+          )}
+
+          <div className="flex justify-end gap-2">
+            <CancelButton onClose={onClose} />
+            <CreateButton type="submit" label={mode === 'create' ? 'Create' : 'Update'} />
+          </div>
+
     {error && <p className="text-light-text dark:text-white text-sm text-center mt-5">{error}</p>}
           </form>
         </div>
