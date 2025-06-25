@@ -3,18 +3,19 @@ import { CrossButton } from '../shared/CrossButton';
 import { CancelButton } from '../shared/CancelButton';
 import { CreateButton } from '../shared/CreateButton';
 import collectionStore from '../../store/collectionStore';
-import api from '../../utils/axios';
 
-export const CreateCard = ({isOpen , onClose}) => {
+export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',description:'',_id:null}}) => {
+  
   const [error,setError]=useState(null);
-  const [formData,setFormData]=useState({cname:'',description:''});
+  const [formData, setFormData] = useState(initialData || { cname: '', description: '', _id: null });
 
-  useEffect(() => {
-    if (!isOpen) {
-      setFormData({ cname: '', description: '' });
-      setError(null);
-    }
-  }, [isOpen]);
+ useEffect(() => {
+  if (isOpen) {
+    setFormData(initialData || { cname: '', description: '', _id: null });
+    setError(null);
+  }
+}, [isOpen, initialData]);
+
 
   const handleChange=(e)=>{
     setFormData({...formData,[e.target.name]:e.target.value});
@@ -24,11 +25,11 @@ export const CreateCard = ({isOpen , onClose}) => {
       e.preventDefault();
 
       try{
-          collectionStore.getState().createCollection({
-          cname: formData.cname,
-          description: formData.description,
-      });
-
+        if(mode=='create'){
+           await collectionStore.getState().createCollection(formData);
+        }else{
+           await collectionStore.getState().updateCollection(formData);
+        }
       onClose();
       }catch(err){
         setError(err?.response?.data?.message || 'Something went wrong');
@@ -48,11 +49,11 @@ export const CreateCard = ({isOpen , onClose}) => {
       <div
         className="relative w-full max-w-md bg-light-background dark:bg-dark-background rounded-lg shadow-lg p-6"
         role="dialog"
-        aria-label="Create Collection form"
+         aria-label={`${mode === 'create' ? 'Create' : 'Update'} Collection form`}
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold text-light-text dark:text-dark-text">
-            Create Collection
+            {mode === 'create' ? 'Create Collection' : 'Update Collection'}
           </h2>
           <CrossButton onClose={onClose}/>
         </div>
@@ -96,7 +97,7 @@ export const CreateCard = ({isOpen , onClose}) => {
 
           <div className="flex justify-end gap-2">
             <CancelButton onClose={onClose}/>
-            <CreateButton type='submit'/>
+            <CreateButton type="submit" label={mode === 'create' ? 'Create' : 'Update'} />
           </div>
           {error && <p className="text-light-text dark:text-white text-sm text-center mt-5">{error}</p>}
         </form>

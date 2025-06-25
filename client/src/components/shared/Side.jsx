@@ -127,7 +127,7 @@ export const Side = () => {
         </div>
       </aside>
 
-      <CreateCard isOpen={isCreateCardOpen} onClose={() => setIsCreateCardOpen(false)} />
+      <CreateCard isOpen={isCreateCardOpen} onClose={() => setIsCreateCardOpen(false) } mode="create"  initialData={{ cname: '', description: '', _id: null }}/>
       {isCollectionPage && (
         <CreateItem isOpen={isCreateItemOpen} onClose={() => setIsCreateItemOpen(false)} />
       )}

@@ -1,14 +1,15 @@
-  import React ,{useState}from 'react'
+  import React ,{useState,useEffect}from 'react'
   import {useNavigate} from 'react-router-dom';
   import collectionStore from '../store/collectionStore';
   import {Card} from '../components/specific/Card'
   import { CreateCard } from '../components/forms/CreateCard';
   import { Placeholder } from '../components/shared/Placeholder';
-  import { useEffect } from 'react';
 
   export const Dashboard = () => {
     const [cardOpen,setCardOpen]=useState(false);
-    const {collections , fetchCollections,deleteCollection}=collectionStore();
+    const [mode,setMode]=useState("create");
+    const [selectedCollection, setSelectedCollection] = useState(null);
+    const {collections , fetchCollections,deleteCollection,updateCollection}=collectionStore();
     const navigate=useNavigate();
 
     useEffect(()=>{
@@ -28,7 +29,10 @@
             <Placeholder
             message="No collections yet"
             buttonLabel="Create Collection"
-            onClick={()=>setCardOpen(true)}/>
+            onClick={()=>{
+              setCardOpen(true);
+              setMode("create")
+            }}/>
           ) : (
           <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4"
@@ -42,13 +46,31 @@
               name={collection.cname}
               description={collection.description}
               onDelete={() => deleteCollection(collection._id)}
-              onUpdate={() => console.log('TODO')}
+              onUpdate={() => {
+                setSelectedCollection({
+                _id: collection._id,
+               cname: collection.cname,
+              description: collection.description
+                });
+                setMode("update");
+                setCardOpen(true);
+              }}
               onClick={() => navigate(`/collection/${collection._id}`)}
             />
           ))}
         </div>
           )}
-          <CreateCard isOpen={cardOpen} onClose={()=> setCardOpen(false)} />
+        <CreateCard
+          isOpen={cardOpen}
+          onClose={() => {
+          setCardOpen(false);
+          setMode("create");
+          setSelectedCollection(null);
+          }}
+           mode={mode}
+           initialData={selectedCollection}
+         />
+
       </section>
     );
   };
