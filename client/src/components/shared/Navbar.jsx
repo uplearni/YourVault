@@ -1,12 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import { SearchBox } from './SearchBox'
 import { Profile } from '../../pages/Profile';
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 export const Navbar = () => {
   const [isProfileOpen , setIsProfileOpen] =useState(false);//for opening the profile
   const [isScrolled,setIsScrolled]=useState(false);//to add shadow only when user scroll a bit
-
+  const navigate=useNavigate();
 
   const toggleProfile=()=>{
     setIsProfileOpen(!isProfileOpen);
@@ -44,6 +44,19 @@ export const Navbar = () => {
         <SearchBox/>
       </div>
 
+
+            <div className='flex'>
+            <button
+              onClick={()=>navigate('/')}
+              className="text-light-text dark:text-white hover:text-light-primary dark:hover:text-dark-primary focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent focus:ring-offset-2 focus:ring-offset-light-background dark:focus:ring-offset-dark-background rounded-full p-1 transition-colors duration-200"
+              aria-label="Go back Home"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+            viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" 
+            className="size-8">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+            </button>
        {/* Profile Toggle */}
             <button
               onClick={toggleProfile}
@@ -64,6 +77,7 @@ export const Navbar = () => {
                 />
               </svg>
             </button>
+        </div>
       </div>
     </nav>
     <Profile isOpen={isProfileOpen} onClose={toggleProfile}/>

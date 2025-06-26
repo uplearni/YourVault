@@ -150,10 +150,10 @@
       id="file"
       name="file"
       onChange={handleChange}
-      // ...
+      className="w-full mt-1 text-light-text dark:text-dark-text  file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-light-primary dark:file:bg-dark-primary file:text-white dark:file:text-white hover:file:text-light-primary hover:file:bg-light-secondary dark:hover:file:bg-dark-secondary dark:hover:file:text-dark-primary"
     />
     {mode === 'update' && formData.file && typeof formData.file === 'object' && (
-      <p className="text-xs mt-1">Current file: {formData.file.name || 'Uploaded file'}</p>
+      <p className="text-xs text-light-text dark:text-white  mt-2">Current file: {formData.file.name || 'Uploaded file'}</p>
     )}
   </div>
 )}

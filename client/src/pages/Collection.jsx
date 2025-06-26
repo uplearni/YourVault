@@ -1,5 +1,5 @@
-import React, { use, useState ,useEffect} from 'react'
-import { useParams } from 'react-router-dom';
+import React, {  useState ,useEffect} from 'react'
+import { useNavigate , useParams } from 'react-router-dom';
 import itemStore from '../store/itemStore';
 import collectionStore from '../store/collectionStore';
 import {ItemCard} from "../components/specific/ItemCard"
@@ -11,6 +11,7 @@ import { CreateCard } from '../components/forms/CreateCard';
 
 export const Collection = () => {
   const { id: collectionId}= useParams();//get collection id from url
+  const navigate=useNavigate();
   const { items, fetchItems, deleteItem,updateItem } = itemStore();
   const {collections,fetchCollections , deleteCollection}=collectionStore();
   
@@ -60,14 +61,36 @@ export const Collection = () => {
       {/* collection description */}
       <div className='mb-6 flex flex-col'>
         <div className='flex justify-between items-center '>
+        <div className='flex'>
+            <button
+            onClick={() => navigate('/')}
+            className="p-2 rounded-full hover:bg-light-primary/10 dark:hover:bg-white/10 transition mr-1"
+            aria-label="Go back"
+          >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+          fill="none" 
+        viewBox="0 0 24 24" 
+            strokeWidth={1.5} 
+            stroke="currentColor" 
+          className="w-5 h-5  dark:text-white"
+            >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          </svg>
+        </button>
         <h1 id='collection-heading'
             className='text-2xl font-bold text-light-text dark:text-dark-text'>
             {collection?.cname || 'Loading...'}
         </h1>
+        </div>
         <div className="flex space-x-2">
               <DeleteButton
                id={collectionId}
-               onClick={() => deleteCollection(collectionId)}
+               onClick={async () => {
+                await deleteCollection(collectionId);
+                navigate('/');
+              }
+              }
               />
               <UpdateButton
                id={collectionId}
