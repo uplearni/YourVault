@@ -6,17 +6,19 @@ const {throwError}=require("../utils/helper");
 exports.getItems=async(req,res,next)=>{
   try {
     const userId = req.userId;
+    const {collectionId}=req.query;
 
-    const collections = await Collection.find({ createdBy: userId }).select("_id");
-    const collectionIds = collections.map((col) => col._id);
+    if(!collectionId){
+      return res.status(400).json({message:"collection ids are required"})
+    }
+     const collection = await Collection.findOne({ _id: collectionId, createdBy: userId });
+     
+    if (!collection) {
+      return res.status(403).json({ message: "Access denied to this collection" });
+    }
 
-    // Then, find all items that belong to any of those collections
-    const items = await Item.find({ collectionId: { $in: collectionIds } });
-
-    res.status(200).json({
-      message: "Items fetched successfully",
-      data: items,
-    });
+    const items = await Item.find({ collectionId });
+    res.status(200).json({ message: "Items fetched", data: items });
   } catch (err) {
     next(err);
   }
@@ -39,7 +41,7 @@ exports.createItem=async (req,res,next)=>{
           if(!req.file) throwError("File is required",422);
           itemData.file = {
           name: req.file.originalname,
-          path: req.file.path,
+          path: req.file.filename,
           mimetype: req.file.mimetype,
          };
        }
@@ -63,9 +65,22 @@ exports.updateItem=async (req,res,next)=>{
 
   try {
     const item = await Item.findById(itemId);
-    if (item.type === "url" && url) item.url = url;
+     if (!item) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
     item.title = title || item.title;
     item.description = description || item.description;
+
+    if (item.type === "url" && url) item.url = url;
+
+    if (item.type === "file" && req.file) {
+      item.file = {
+        name: req.file.originalname,
+        path: req.file.filename,
+        mimetype: req.file.mimetype,
+      };
+    }
 
     const updatedItem = await item.save();
     res.status(200).json({ message: "Item updated", item: updatedItem });

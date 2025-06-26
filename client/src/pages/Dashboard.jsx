@@ -9,7 +9,7 @@
     const [cardOpen,setCardOpen]=useState(false);
     const [mode,setMode]=useState("create");
     const [selectedCollection, setSelectedCollection] = useState(null);
-    const {collections , fetchCollections,deleteCollection,updateCollection}=collectionStore();
+    const {collections , fetchCollections,deleteCollection}=collectionStore();
     const navigate=useNavigate();
 
     useEffect(()=>{

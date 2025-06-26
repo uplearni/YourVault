@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/",isAuth,itemController.getItems);
 router.post("/",isAuth,upload.single("file"),itemController.createItem);
-router.put("/:itemId",isAuth,itemController.updateItem);
+router.put("/:itemId",isAuth,upload.single("file"),itemController.updateItem);
 router.get("/:itemId", isAuth, itemController.getItemById);
 router.delete("/:itemId",isAuth,itemController.deleteItem);
 

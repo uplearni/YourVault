@@ -6,10 +6,19 @@ export const ItemCard = React.memo(({ id, name, description, link, file ,onUpdat
  
   const handleFileDownload = () => {
     if (file) {
-      console.log(`Downloading file: ${file}`);
-     
+      const fileUrl =
+        typeof file === 'object' && file.path
+          ? `/uploads/${file.path}`
+          : typeof file === 'string'
+          ? file
+          : null;
+
+      if (fileUrl) {
+        window.open(fileUrl, '_blank');
+      }
     }
   };
+
 
   // icon based on link or file
   const getIcon = () => {
@@ -38,6 +47,11 @@ export const ItemCard = React.memo(({ id, name, description, link, file ,onUpdat
     return null;
   };
 
+ const getFileLabel = () => {
+    if (typeof file === 'object' && file.name) return file.name;
+    if (typeof file === 'string') return 'Download File';
+    return 'Download';
+  };
 
   return (
     <div
@@ -78,7 +92,7 @@ export const ItemCard = React.memo(({ id, name, description, link, file ,onUpdat
               className="text-light-primary dark:text-dark-primary hover:underline text-sm"
               aria-label={`Download file for ${name}`}
             >
-              Download {file}
+              {getFileLabel()}
             </button>
           ) : (
             <span className="text-light-text/50 dark:text-dark-text/50 text-sm">
