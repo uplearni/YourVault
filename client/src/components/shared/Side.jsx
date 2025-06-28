@@ -53,7 +53,7 @@ const collectionId = match?.params?.collectionId;
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 p-6 bg-light-primary dark:bg-dark-primary text-white  overflow-y-auto transform transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:block shadow-lg rounded-r-lg`}
+        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 p-6 bg-light-primary dark:bg-dark-primary text-white  overflow-y-auto transform transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:block shadow-lg`}
         role="complementary"
         aria-label="Sidebar navigation"
       >
