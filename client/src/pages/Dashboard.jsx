@@ -1,6 +1,7 @@
   import React ,{useState,useEffect}from 'react'
   import {useNavigate} from 'react-router-dom';
   import collectionStore from '../store/collectionStore';
+  import uiStore from '../store/uiStore';
   import {Card} from '../components/specific/Card'
   import { CreateCard } from '../components/forms/CreateCard';
   import { Placeholder } from '../components/shared/Placeholder';
@@ -10,9 +11,15 @@
     const [mode,setMode]=useState("create");
     const [selectedCollection, setSelectedCollection] = useState(null);
     const {collections , fetchCollections,deleteCollection}=collectionStore();
+    const {searchQuery , setSearchQuery}=uiStore();
     const navigate=useNavigate();
 
+    const filteredCollections = collections.filter(col =>
+       col.cname.toLowerCase().trim().includes(searchQuery.toLowerCase().trim())
+    );
+
     useEffect(()=>{
+      setSearchQuery('');
       fetchCollections();
     },[]);
 
@@ -39,7 +46,7 @@
           role="list"
           >
             
-            {collections.map((collection) => (
+            {filteredCollections.map((collection) => (
             <Card
               key={collection._id}
               id={collection._id}

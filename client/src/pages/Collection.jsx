@@ -1,6 +1,7 @@
 import React, {  useState ,useEffect} from 'react'
 import { useNavigate , useParams } from 'react-router-dom';
 import itemStore from '../store/itemStore';
+import uiStore from '../store/uiStore';
 import collectionStore from '../store/collectionStore';
 import {ItemCard} from "../components/specific/ItemCard"
 import { DeleteButton } from '../components/shared/DeleteButton';
@@ -14,7 +15,8 @@ export const Collection = () => {
   const navigate=useNavigate();
   const { items, fetchItems, deleteItem,updateItem } = itemStore();
   const {collections,fetchCollections , deleteCollection}=collectionStore();
-  
+  const {searchQuery , setSearchQuery}=uiStore();
+
   const [cardOpen, setCardOpen] = useState(false);
   const [itemOpen,setItemOpen]=useState(false);
   const [mode, setMode] = useState("update");
@@ -23,8 +25,15 @@ export const Collection = () => {
 
   const collection = collections.find(col => col._id === collectionId);
 
+  const filteredItems = items.filter((item) =>
+  (item?.title || '').toLowerCase().includes(searchQuery.toLowerCase().trim())
+);
+
+
   useEffect(() => {
+    
     if (collectionId) {
+      setSearchQuery('');
       fetchCollections();
       fetchItems(collectionId);
     }
@@ -108,7 +117,7 @@ export const Collection = () => {
         </p>
       )}
       </div>
-     {items.length === 0 ? (
+     {filteredItems.length === 0 ? (
         <Placeholder
           message="No items in this collection yet."
           buttonLabel="Create Item"
@@ -119,7 +128,7 @@ export const Collection = () => {
         />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4" role="list">
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <ItemCard
               key={item._id}
               id={item._id}
