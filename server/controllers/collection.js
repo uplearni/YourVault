@@ -146,3 +146,19 @@
           next(err);
       }
   }
+
+  exports.toggleFavorite=async(req,res,next)=>{
+    try{
+      const id=req.params.id;
+      const  collection=await Collection.findById(id);
+      collection.isFavorite=!collection.isFavorite;
+      await collection.save();
+      res.status(200).json({
+        message:"Favorite Status Toggled",
+        collection
+    })
+  }catch(err){
+    next(err);
+  }
+
+}

@@ -7,6 +7,10 @@ const collectionSchema=new mongoose.Schema({
     required:true
    },
    description:String,
+   isFavorite:{
+      type:Boolean,
+      default:false,
+   },
    createdBy: {
     type: Schema.Types.ObjectId,
     ref: "User",

@@ -1,6 +1,7 @@
     import {create} from 'zustand';
     import api from "../utils/axios";
 
+
     const collectionStore=create((set)=>(
         {
             collections:[],
@@ -74,6 +75,20 @@
         throw new Error(errorMessage);
         }
     },
+
+    toggleFavorite:async(id)=>{
+
+        try{
+            const res=await api.patch(`collection/favorite/${id}`)
+            set((state)=>({
+                collections:state.collections.map((col)=>col._id===id ? res.data.collection:col)
+            }))
+        }catch (err) {
+        const errorMessage = err?.response?.data?.message || 'Failed to update collection';
+        set({ error: errorMessage, loading: false });
+        throw new Error(errorMessage);
+        }
+    }
     }));
 
     export default collectionStore;

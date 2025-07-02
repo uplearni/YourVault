@@ -8,7 +8,7 @@ router.post("/",isAuth,collectionController.createCollection);//done
 router.get("/:collectionId",isAuth,collectionController.getCollectionById);
 router.put("/:collectionId",isAuth,collectionController.updateCollection);
 router.delete("/:collectionId",isAuth,collectionController.deleteCollection);
-
+router.patch("/favorite/:id",collectionController.toggleFavorite);
 module.exports = router;
 
 //"userId": "6855bd1b585e708089020f69"

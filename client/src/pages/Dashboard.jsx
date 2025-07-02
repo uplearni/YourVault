@@ -10,7 +10,7 @@
     const [cardOpen,setCardOpen]=useState(false);
     const [mode,setMode]=useState("create");
     const [selectedCollection, setSelectedCollection] = useState(null);
-    const {collections , fetchCollections,deleteCollection}=collectionStore();
+    const {collections , fetchCollections,deleteCollection,toggleFavorite}=collectionStore();
     const {searchQuery , setSearchQuery}=uiStore();
     const navigate=useNavigate();
 
@@ -52,6 +52,7 @@
               id={collection._id}
               name={collection.cname}
               description={collection.description}
+              isFavorite={collection.isFavorite}
               onDelete={() => deleteCollection(collection._id)}
               onUpdate={() => {
                 setSelectedCollection({
@@ -63,6 +64,7 @@
                 setCardOpen(true);
               }}
               onClick={() => navigate(`/collection/${collection._id}`)}
+              onToggleFavorite={()=>toggleFavorite(collection._id)}
             />
           ))}
         </div>
