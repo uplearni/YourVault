@@ -13,7 +13,7 @@ export const Card = React.memo(({ id, name, description, onUpdate, onDelete ,onC
     >
       <div className="space-y-3">
         <div className='flex justify-between items-start'>
-        <div className="text-base sm:text-lg font-bold text-light-text dark:text-dark-text  max-w-[85%] truncate">
+        <div className="text-base sm:text-lg font-bold text-light-text dark:text-dark-text  max-w-[85%] line-clamp-2">
           {name}
         </div>
         <button

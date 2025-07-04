@@ -11,12 +11,12 @@
     const [mode,setMode]=useState("create");
     const [selectedCollection, setSelectedCollection] = useState(null);
     const {collections , fetchCollections,deleteCollection,toggleFavorite}=collectionStore();
-    const {searchQuery , setSearchQuery}=uiStore();
+    const {searchQuery , setSearchQuery,filterMode,setFilterMode}=uiStore();
     const navigate=useNavigate();
 
     const filteredCollections = collections.filter(col =>
        col.cname.toLowerCase().trim().includes(searchQuery.toLowerCase().trim())
-    );
+    ).filter((col)=>(filterMode==='favorites' ? col.isFavorite : true));
 
     useEffect(()=>{
       setSearchQuery('');
