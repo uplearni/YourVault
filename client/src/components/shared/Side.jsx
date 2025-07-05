@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { NavLink, useLocation , useMatch} from 'react-router-dom';
+import { useLocation , useMatch} from 'react-router-dom';
 import { FaSun, FaMoon } from 'react-icons/fa';
 import { CreateCard } from '../forms/CreateCard';
 import { CreateItem } from '../forms/CreateItem';
@@ -58,12 +58,12 @@ const collectionId = match?.params?.collectionId;
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-16 left-0 h-[calc(100vh-4rem)] w-64 p-6 bg-light-primary dark:bg-dark-primary text-white  overflow-y-auto transform transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:block shadow-lg`}
+        className={`fixed top-18 left-0 h-[calc(100vh-4rem)] w-64 p-6 bg-light-primary dark:bg-dark-primary text-white  overflow-y-auto transform transition-all duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:block shadow-lg`}
         role="complementary"
         aria-label="Sidebar navigation"
       >
         <div className="flex flex-col h-full justify-between">
-          <nav className="space-y-2">
+          <nav className="space-y-2 ">
             <button
               className={`w-full rounded text-sm font-medium   hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-background dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary transition-colors duration-200
                ${

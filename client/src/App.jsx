@@ -9,7 +9,6 @@ import {Collection} from "./pages/Collection";
 import {NotFound} from "./pages/NotFound";
 import authStore from './store/authStore';
 
-
 //const LayoutLoader=lazy(()=>import("./components/LayoutLoader"));
 //const Auth=lazy(()=>import("./pages/Auth"));
 //const Dashboard=lazy(()=>import("./pages/Dashboard"));
@@ -35,6 +34,7 @@ function App() {
        </Routes>
        </Suspense>
      </BrowserRouter>
+
     </>
   )
 }
