@@ -8,8 +8,8 @@ import uiStore from '../../store/uiStore';
 export const Side = () => {
   const setFilterMode = uiStore((state) => state.setFilterMode);
   const setSearchQuery = uiStore((state) => state.setSearchQuery);
+  const filterMode = uiStore((state) => state.filterMode);
   const [sidebarOpen, setIsSidebarOpen] = useState(false);
-
 
 const match = useMatch("/collection/:collectionId");
 const collectionId = match?.params?.collectionId;
@@ -65,7 +65,11 @@ const collectionId = match?.params?.collectionId;
         <div className="flex flex-col h-full justify-between">
           <nav className="space-y-2">
             <button
-              className="w-full rounded text-sm font-medium text-white  hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-background dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary transition-colors duration-200"
+              className={`w-full rounded text-sm font-medium   hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-background dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary transition-colors duration-200
+               ${
+    filterMode === 'all'
+      ?' text-light-primary dark:text-dark-primary bg-light-background dark:bg-dark-secondary'
+      : 'text-white' }`}
                onClick={() => {
                  setFilterMode('all');
                  setSearchQuery('');
@@ -74,8 +78,8 @@ const collectionId = match?.params?.collectionId;
              aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
             >
               <div className="flex items-center justify-between py-2 px-4">
-                <div className="flex justify-between w-full">
-                   {isCollectionPage ? 'Items' : 'Collections'}
+                <div  className={'flex justify-between w-full'}>
+  {isCollectionPage ? 'Items' : 'Collections'}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -95,8 +99,12 @@ const collectionId = match?.params?.collectionId;
             </button>
             {!isCollectionPage ?
                          <button
-              className="w-full rounded text-sm font-medium text-white  hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-background dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary transition-colors duration-200"
-               onClick={() => {
+             className={`w-full rounded text-sm font-medium   hover:text-light-primary dark:hover:text-dark-primary hover:bg-light-background dark:hover:bg-dark-secondary hover:ring-2 hover:ring-light-secondary dark:hover:ring-dark-secondary transition-colors duration-200
+               ${
+    filterMode === 'favorites'
+      ?' text-light-primary dark:text-dark-primary bg-light-background dark:bg-dark-secondary'
+      : 'text-white' }`}
+       onClick={() => {
               setFilterMode('favorites');
               setSearchQuery('');
              }}
