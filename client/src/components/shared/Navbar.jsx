@@ -8,6 +8,7 @@ export const Navbar = () => {
   const [isScrolled,setIsScrolled]=useState(false);//to add shadow only when user scroll a bit
   const navigate=useNavigate();
 
+
   const toggleProfile=()=>{
     setIsProfileOpen(!isProfileOpen);
   }
@@ -39,10 +40,7 @@ export const Navbar = () => {
       </NavLink>
 
       
-      <div className="hidden md:block">
-        {/**Desktop Search*/}
         <SearchBox/>
-      </div>
 
 
             <div className='flex'>
