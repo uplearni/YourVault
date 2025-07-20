@@ -16,26 +16,34 @@ const itemSchema=new mongoose.Schema({
         },
     },
 
-    file: {
-        name: {
-        type: String,
-        required: function () {
-           return this.type === "file";
-        }
+     file: {
+        // Updated for Cloudinary
+        public_id: { // Cloudinary public ID for the file
+            type: String,
+            required: function () {
+                return this.type === "file";
+            }
+        },
+        secure_url: { // Cloudinary secure URL for the file
+            type: String,
+            required: function () {
+                return this.type === "file";
+            }
+        },
+        original_name: { // Store the original name for display purposes if needed
+            type: String,
+            required: function () {
+                return this.type === "file";
+            }
+        },
+        mimetype: { // Keep mimetype if useful
+            type: String,
+            required: function () {
+                return this.type === "file";
+            }
+        },
+        // You might also want to store other properties like size, format, etc.
     },
-      path: {
-        type: String,
-        required: function () {
-        return this.type === "file";
-      }
-    },
-       mimetype: {
-       type: String,
-       required: function () {
-        return this.type === "file";
-     }
-    }
-   },
 
     collectionId:{
         type:mongoose.SchemaTypes.ObjectId,

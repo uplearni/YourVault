@@ -10,6 +10,7 @@
                 const password=req.body.password;
                 const hashedpw=await bcrypt.hash(password,12);//hashing password
 
+                //console.log("User signed up:", { name, email });
                 const user=new User({//creating object
                     name:name,
                     email:email,
