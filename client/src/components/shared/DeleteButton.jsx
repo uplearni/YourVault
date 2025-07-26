@@ -1,9 +1,23 @@
+import { useState } from "react";
 import React from "react";
+import { ConfirmationModal } from "./ConfirmationModal";
 
 export const DeleteButton = React.memo(({ id, onClick }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleConfirm = () => {
+    onClick(id); // Call the original onClick function passed from the parent
+    setIsModalOpen(false); // Close the modal
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
+    <>
     <button
-      onClick={() => onClick(id)}
+      onClick={handleOpenModal}
       className="rounded-full p-2 m-1 text-light-text dark:text-dark-text hover:bg-light-primary dark:hover:bg-dark-primary hover:text-white  transition-colors duration-200"
       aria-label="Delete collection"
     >
@@ -22,5 +36,13 @@ export const DeleteButton = React.memo(({ id, onClick }) => {
         />
       </svg>
     </button>
+    <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={handleConfirm}
+        title={`Delete`}
+        message={`Are you sure you want to delete this ? This action cannot be undone.`}
+      />
+    </>
   );
 });

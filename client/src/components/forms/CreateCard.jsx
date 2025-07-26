@@ -4,15 +4,40 @@ import { CancelButton } from '../shared/CancelButton';
 import { CreateButton } from '../shared/CreateButton';
 import collectionStore from '../../store/collectionStore';
 
+const SpinnerIcon = () => (
+    <svg
+        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+    >
+        <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+        ></circle>
+        <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V8H4z"
+        ></path>
+    </svg>
+);
+
 export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',description:'',_id:null}}) => {
   
   const [error,setError]=useState(null);
+   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState(initialData || { cname: '', description: '', _id: null });
 
  useEffect(() => {
   if (isOpen) {
     setFormData(initialData || { cname: '', description: '', _id: null });
     setError(null);
+    setIsSubmitting(false);
   }
 }, [isOpen, initialData]);
 
@@ -23,6 +48,8 @@ export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',descri
 
   const handleSubmit= async (e)=>{
       e.preventDefault();
+      setIsSubmitting(true);
+      setError(null);
 
       try{
         if(mode=='create'){
@@ -33,6 +60,8 @@ export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',descri
       onClose();
       }catch(err){
         setError(err?.response?.data?.message || 'Something went wrong');
+      }finally {
+            // Set loading state to false once the process is complete
       }
       
   }
@@ -43,7 +72,7 @@ export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',descri
      <div className='fixed inset-0 z-50 flex items-center justify-center'>
       <div 
       className='absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm'
-      onClick={onClose}
+      onClick={isSubmitting ? undefined : onClose}
       aria-hidden="true"/>
 
       <div
@@ -55,9 +84,10 @@ export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',descri
           <h2 className="text-xl font-semibold text-light-text dark:text-dark-text">
             {mode === 'create' ? 'Create Collection' : 'Update Collection'}
           </h2>
-          <CrossButton onClose={onClose}/>
+          <CrossButton onClose={onClose} disabled={isSubmitting} />
         </div>
 
+      <fieldset disabled={isSubmitting}>
         <form onSubmit={handleSubmit} className="space-y-4 border-t p-5 border-light-accent dark:border-dark-accent">
           <div>
             <label
@@ -97,10 +127,23 @@ export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',descri
 
           <div className="flex justify-end gap-2">
             <CancelButton onClose={onClose}/>
-            <CreateButton type="submit" label={mode === 'create' ? 'Create' : 'Update'} />
-          </div>
+            <CreateButton
+                                type="submit"
+                                disabled={isSubmitting}
+                                label={
+                                    isSubmitting ? (
+                                        <div className="flex items-center">
+                                            <SpinnerIcon />
+                                            {mode === 'create' ? 'Creating...' : 'Updating...'}
+                                        </div>
+                                    ) : (
+                                        mode === 'create' ? 'Create' : 'Update'
+                                    )
+                                }
+                            /></div>
           {error && <p className="text-light-text dark:text-white text-sm text-center mt-5">{error}</p>}
         </form>
+         </fieldset>
       </div>
     </div>
   );
