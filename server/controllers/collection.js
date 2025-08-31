@@ -117,7 +117,7 @@
           const result=await Collection.findOneAndUpdate(
               {_id:collectionId,createdBy:userId},//find and user can update their own collection
               {cname,description},
-              {new:true},
+              {new:true},//so that it return the updated document
           )
 
           if(!result) throwError("Collection not found",404);

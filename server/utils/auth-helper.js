@@ -6,7 +6,10 @@ exports.generatedAuthToken=(user)=>{
         email:user.email,
         userId:user._id
      },
-    JWT_SECRET);
+    JWT_SECRET,
+   {
+      expiresIn:'7d'
+   });
 
 return token;
 }

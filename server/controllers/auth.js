@@ -35,6 +35,7 @@
             const loadedUser=await User.findOne({email}); //finding the user
 
             if(!loadedUser) throwError("User not found",401);//if not found then send back error
+            //if user exist then we check if the password is equal 
             const isEqual=await bcrypt.compare(password,loadedUser.password); // checking if the password is correct
 
             if(!isEqual) throwError("Wrong Password , Please Enter again",422); //check if wrong or not 

@@ -16,7 +16,7 @@ module.exports=(req,res,next)=>{
     }
 
     if(!decodedToken) throwError("Not authenticated",401);
-    req.userId = decodedToken.userId;
+    req.userId = decodedToken.userId;//adding these so that every route can access this s
     req.email=decodedToken.email;
     next();
 }
