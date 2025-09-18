@@ -1,4 +1,4 @@
-Live demo : https://your-vault-mu.vercel.app/
-testing login credentials :
-email : test@gmail.com
-password : test1234
+- Live Demo : https://your-vault-mu.vercel.app/
+- Testing Login Credentials :
+  - Email : test@gmail.com
+  - Password : test1234
