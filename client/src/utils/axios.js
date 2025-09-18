@@ -3,7 +3,7 @@
 
     //this create a custom instance of axios called api 
     const api=axios.create({
-        baseURL:'/api'//all our calls will start from this '/' , this is we used in our backend for root router
+        baseURL: import.meta.env.VITE_API_URL//all our calls will start from this '/' , this is we used in our backend for root router
     })
 
     //interceptor: runs before every request is send 

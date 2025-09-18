@@ -16,7 +16,6 @@ export const Collection = () => {
   const { items, fetchItems, deleteItem,updateItem } = itemStore();
   const {collections,fetchCollections , deleteCollection}=collectionStore();
   const {searchQuery , setSearchQuery}=uiStore();
-
   const [cardOpen, setCardOpen] = useState(false);
   const [itemOpen,setItemOpen]=useState(false);
   const [mode, setMode] = useState("update");
