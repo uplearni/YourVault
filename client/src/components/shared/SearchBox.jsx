@@ -21,7 +21,7 @@ export const SearchBox = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search collections..."
+            placeholder="Search"
             className="w-64 bg-light-secondary dark:bg-dark-secondary text-light-text dark:text-white rounded-md px-3 py-1.5 placeholder-light-text/70 dark:placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition"
           />
     </div>

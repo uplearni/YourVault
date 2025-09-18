@@ -34,7 +34,7 @@
 
     const handleLogin = async (e) => {
       e.preventDefault();
-      console.log("sending data for login");
+      //console.log("sending data for login");
       setLoading(true);
       setError(null);
 
@@ -45,15 +45,15 @@
       }
       
       try {
-      console.log("sending request");
+      //console.log("sending request");
         const response = await api.post('/user/login', formData);
         const { token, userId, name ,email} = response.data;
         setAuth(token, userId, name,email);
-        console.log("got response");
+       // console.log("got response");
       } catch (err) {
         const errorMessage = err.response?.data?.message || 'Login failed. Please try again.';
         setError(errorMessage);
-      console.log(errorMessage);
+     // console.log(errorMessage);
       } finally {
         setLoading(false);
       }

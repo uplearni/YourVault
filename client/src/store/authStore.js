@@ -27,8 +27,9 @@
             }),
     }),
     {
-        name:'auth-storage',
-
+        name:'auth-storage',//zustand create this automatically 
+       // in local storage , by default zustand use local storage
+       // storage : ()=> sessionStorage,
     }
     ));
 

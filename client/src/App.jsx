@@ -18,7 +18,7 @@ import authStore from './store/authStore';
 
 function App() {
  const token = authStore((state) => state.token);
- const user = !!token;
+ const user = !!token; // double exclamation (!!), often called the "double bang," is a concise way to convert any JavaScript value to its strict boolean equivalent (true or false).
 
 
   return (

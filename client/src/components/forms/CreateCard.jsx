@@ -61,7 +61,8 @@ export const CreateCard = ({isOpen , onClose , mode,initialData={cname:'',descri
       }catch(err){
         setError(err?.response?.data?.message || 'Something went wrong');
       }finally {
-            // Set loading state to false once the process is complete
+            
+        setIsSubmitting(false);
       }
       
   }
